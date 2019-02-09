@@ -15,6 +15,8 @@ TARGET_URL = "https://www.imdb.com/search/title?title_type=feature&release_date=
 BACKUP_HTML = 'movies.html'
 OUTPUT_CSV = 'movies.csv'
 
+# Create lists for all variables
+dictionary = {}
 
 def extract_movies(dom):
     """
@@ -27,12 +29,46 @@ def extract_movies(dom):
     - Runtime (only a number!)
     """
 
+    all_movies = dom.find_all('div', class_ = "lister-item mode-advanced")
+
+
+
+    # append to dictionary
+    for i in range(len(all_movies)):
+        list = []
+        list.append(all_movies[i].h3.a.text)
+        list.append(all_movies[i].strong.text)
+        movie_year = all_movies[i].find('span', class_ = "lister-item-year text-muted unbold")
+        new_year = ''.join(ch for ch in movie_year.text if ch.isdigit())
+        list.append(new_year)
+        movie_cast = all_movies[i].find('p', class_ = "").find_all('a')
+        people =[]
+        for j in range(len(movie_cast)):
+            people.append(movie_cast[j].text)
+        people = ", ".join(people)
+        list.append(people)
+        movie_runtime = all_movies[i].find('span', class_ = "runtime")
+        list.append(movie_runtime.text.strip('min'))
+        dictionary[i] = list
+
+    print(dictionary[0])
+    print(dictionary[1])
+
+
+
+
+
+
+    soup = BeautifulSoup("<html>data</html>", features="html.parser")
+
+
+
     # ADD YOUR CODE HERE TO EXTRACT THE ABOVE INFORMATION ABOUT THE
     # HIGHEST RATED MOVIES
     # NOTE: FOR THIS EXERCISE YOU ARE ALLOWED (BUT NOT REQUIRED) TO IGNORE
     # UNICODE CHARACTERS AND SIMPLY LEAVE THEM OUT OF THE OUTPUT.
 
-    return []   # REPLACE THIS LINE AS WELL IF APPROPRIATE
+    return [soup]   # REPLACE THIS LINE AS WELL IF APPROPRIATE
 
 
 def save_csv(outfile, movies):
@@ -41,6 +77,9 @@ def save_csv(outfile, movies):
     """
     writer = csv.writer(outfile)
     writer.writerow(['Title', 'Rating', 'Year', 'Actors', 'Runtime'])
+    for i in range(len(dictionary)):
+        writer.writerow(dictionary[i])
+
 
     # ADD SOME CODE OF YOURSELF HERE TO WRITE THE MOVIES TO DISK
 
