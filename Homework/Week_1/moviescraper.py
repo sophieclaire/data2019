@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-# Name:
-# Student number:
+# Name: Sophie Stiekema
+# Student number: 10992499
 """
 This script scrapes IMDB and outputs a CSV file with highest rated movies.
 """
 
 import csv
+import re
 from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
@@ -15,73 +16,85 @@ TARGET_URL = "https://www.imdb.com/search/title?title_type=feature&release_date=
 BACKUP_HTML = 'movies.html'
 OUTPUT_CSV = 'movies.csv'
 
-# Create lists for all variables
+# Create a dictionary that will contain each movie's list
 dictionary = {}
 
 def extract_movies(dom):
-    """
-    Extract a list of highest rated movies from DOM (of IMDB page).
-    Each movie entry should contain the following fields:
-    - Title
-    - Rating
-    - Year of release (only a number!)
-    - Actors/actresses (comma separated if more than one)
-    - Runtime (only a number!)
-    """
 
+    """
+    Extracts a list of highest rated movies from DOM (of IMDB page).
+    Gets data for each movie and classifies it in a dictionary.
+    """
+    # Find all the movies' information
     all_movies = dom.find_all('div', class_ = "lister-item mode-advanced")
 
-
-
-    # append to dictionary
+    # Append all movies'variables to dictionary
     for i in range(len(all_movies)):
+
+        # Make a list where all movies and their info will be stored
         list = []
-        list.append(all_movies[i].h3.a.text)
-        list.append(all_movies[i].strong.text)
+
+        # Append title to list
+        if all_movies[i].h3.a.text == None:
+            list.append("N/A")
+        else:
+            list.append(all_movies[i].h3.a.text)
+
+        # Append rating to list
+        if all_movies[i].strong.text == None:
+            list.append("N/A")
+        else:
+            list.append(all_movies[i].strong.text)
+
+        # Append year to list
         movie_year = all_movies[i].find('span', class_ = "lister-item-year text-muted unbold")
         new_year = ''.join(ch for ch in movie_year.text if ch.isdigit())
-        list.append(new_year)
-        movie_cast = all_movies[i].find('p', class_ = "").find_all('a')
+        if new_year == None:
+            list.append("N/A")
+        else:
+            list.append(new_year)
+
+        # Append actors to list
+        movie_cast = all_movies[i].find_all('a', href=re.compile("adv_li_st"))
+
+        # make a list to store all actors' names
         people =[]
         for j in range(len(movie_cast)):
             people.append(movie_cast[j].text)
         people = ", ".join(people)
-        list.append(people)
+
+        # append the list of actors to the movie's list
+        if people == None:
+            list.append("N/A")
+        else:
+            list.append(people)
+
+        # Append runtime to list
         movie_runtime = all_movies[i].find('span', class_ = "runtime")
-        list.append(movie_runtime.text.strip('min'))
+        if movie_runtime == None:
+            list.append("N/A")
+        else:
+            list.append(movie_runtime.text.strip('min'))
+
+        # Add the movie's list to the dictionary
         dictionary[i] = list
-
-    print(dictionary[0])
-    print(dictionary[1])
-
-
-
-
-
 
     soup = BeautifulSoup("<html>data</html>", features="html.parser")
 
-
-
-    # ADD YOUR CODE HERE TO EXTRACT THE ABOVE INFORMATION ABOUT THE
-    # HIGHEST RATED MOVIES
-    # NOTE: FOR THIS EXERCISE YOU ARE ALLOWED (BUT NOT REQUIRED) TO IGNORE
-    # UNICODE CHARACTERS AND SIMPLY LEAVE THEM OUT OF THE OUTPUT.
-
-    return [soup]   # REPLACE THIS LINE AS WELL IF APPROPRIATE
-
+    return [soup]
 
 def save_csv(outfile, movies):
     """
     Output a CSV file containing highest rated movies.
     """
     writer = csv.writer(outfile)
+
+    # Write the column's labels
     writer.writerow(['Title', 'Rating', 'Year', 'Actors', 'Runtime'])
+
+    # Write the movie's variables in each column on each row
     for i in range(len(dictionary)):
         writer.writerow(dictionary[i])
-
-
-    # ADD SOME CODE OF YOURSELF HERE TO WRITE THE MOVIES TO DISK
 
 
 def simple_get(url):
