@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+Sophie Stiekema,
+10992499,
+this file .......
+-->
+
+<html>
+  <head>
+    <title> My Title </title>
+  </head>
+  <body>
+      <canvas id="line" width="300" height="300"></canvas>
+      <script>
+          var fileName = "data.json";
+          var txtFile = new XMLHttpRequest();
+          txtFile.onreadystatechange = function() {
+            if (txtFile.readyState === 4 && txtFile.status == 200) {
+              console.log(JSON.parse(txtFile.responseText));
+              var data = JSON.parse(txtFile.responseText);
+              console.log(Object.keys(data));
+            }
+          }
+          txtFile.open("GET", fileName);
+          txtFile.send();
+
+      </script>
+
+    </body>
+</html>
