@@ -2,29 +2,140 @@
 <!--
 Sophie Stiekema,
 10992499,
-this file .......
+This file creates a line chart
 -->
 
 <html>
   <head>
-    <title> My Title </title>
+    <title> Number of marriages over the years </title>
   </head>
   <body>
-      <canvas id="line" width="300" height="300"></canvas>
+    <p>
+      Sophie Stiekema,
+      10992499,
+      Javascript Intro
+    </p>
+
       <script>
+        var min_x = Infinity, max_x = -Infinity;
+        var min_y = Infinity, max_y = -Infinity;
+
           var fileName = "data.json";
           var txtFile = new XMLHttpRequest();
           txtFile.onreadystatechange = function() {
             if (txtFile.readyState === 4 && txtFile.status == 200) {
               console.log(JSON.parse(txtFile.responseText));
               var data = JSON.parse(txtFile.responseText);
-              console.log(Object.keys(data));
+              Object.keys(data).forEach(function(key) {
+                var marriages = data[key]['Marriage Count'];
+                var year = parseInt(key);
+                console.log(key, marriages);
+                // find domain values for y
+                if (marriages > max_y) {
+                  max_y = marriages;
+                }
+                if (marriages < min_y) {
+                  min_y = marriages;
+                }
+                // find domain values for x
+                if (year > max_x) {
+                  max_x = year;
+                }
+                if (year < min_x) {
+                  min_x = year;
+                }
+              });
+              var domain_x = [min_x, max_x]
+              var domain_y = [min_y, max_y]
+
+              // create the transformation functions
+              var transform_y = createTransform(domain_y, [85, 50])
+              var transform_x = createTransform(domain_x, [100, 500])
+              var first_point = (Object.keys(data)[0]);
+
+              // draw
+              let cx = document.querySelector("canvas").getContext("2d");
+              cx.strokeStyle = "pink";
+              cx.beginPath();
+              Object.keys(data).forEach(function(key) {
+                var marriages = data[key]['Marriage Count'];
+
+                // print spots & draw line
+                cx.fillRect(transform_x(key), transform_y(marriages), 4, 4);
+                cx.lineTo(transform_x(key), transform_y(marriages), 4, 4);
+
+                // draw x labels
+                cx.fillRect(transform_x(key), 285, 2, 6);
+                cx.font = "12px Georgia";
+                cx.fillStyle = "black";
+                cx.fillText(key, transform_x(key) - 10, 300);
+              });
+
+              // draw y labels
+              var j = 0;
+              for (var i = 285; i > 0 ; i-=50) {
+                cx.fillRect(transform_x(first_point), i, -6, 2);
+                cx.font = "12px Georgia";
+                cx.fillStyle = "black";
+                var axis = transform_x(first_point) - 33;
+                cx.fillText( j, axis, i);
+                j += 500;
+
+                // print titles
+                cx.font = "22px Georgia";
+                cx.fillStyle = "black";
+                cx.fillText("Number of marriages over the years", 170, 20);
+                cx.font = "18px Georgia";
+                cx.fillStyle = "grey";
+                cx.fillText("Year", 300, 330);
+                cx.save();
+                cx.translate(150,90);
+                cx.rotate(-0.5*Math.PI);
+                var legend = "Number of marriages";
+                cx.fillText(legend , -150, -90);
+                cx.restore();
+              }
+              cx.stroke();
+
+              // draw axes
+              cx.strokeStyle = "black";
+              cx.beginPath();
+              cx.moveTo(transform_x(first_point), 35);
+              cx.lineTo(transform_x(first_point), 285);
+              cx.moveTo(transform_x(first_point), 285);
+              cx.lineTo(570, 285);
+              cx.stroke();
             }
           }
           txtFile.open("GET", fileName);
           txtFile.send();
 
+          function createTransform(domain, range){
+          	// domain is a two-element array of the data bounds [domain_min, domain_max]
+          	// range is a two-element array of the screen bounds [range_min, range_max]
+          	// this gives you two equations to solve:
+          	// range_min = alpha * domain_min + beta
+          	// range_max = alpha * domain_max + beta
+           	// a solution would be:
+
+            var domain_min = domain[0]
+            var domain_max = domain[1]
+            var range_min = range[0]
+            var range_max = range[1]
+
+            // formulas to calculate the alpha and the beta
+           	  var alpha = (range_max - range_min) / (domain_max - domain_min)
+            var beta = range_max - alpha * domain_max
+
+            // returns the function for the linear transformation (y= a * x + b)
+            return function(x){
+              return alpha * x + beta;
+            }
+          }
+
       </script>
 
+      <canvas id="line" width="600" height="350"></canvas>
+  <p> Data retrieved from: https://www.stats.govt.nz/</p>
     </body>
 </html>
