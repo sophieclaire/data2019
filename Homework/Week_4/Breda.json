@@ -1,0 +1,436 @@
+
+{
+   "objectIdFieldName": "OBJECTID",
+   "uniqueIdField": {
+      "name": "OBJECTID",
+      "isSystemMaintained": true
+   },
+   "globalIdFieldName": "",
+   "geometryType": "esriGeometryPolygon",
+   "spatialReference": {
+      "wkid": 4326,
+      "latestWkid": 4326
+   },
+   "fields": [
+      {
+         "name": "OBJECTID",
+         "type": "esriFieldTypeOID",
+         "alias": "OBJECTID",
+         "sqlType": "sqlTypeOther",
+         "domain": null,
+         "defaultValue": null
+      },
+      {
+         "name": "BUURT",
+         "type": "esriFieldTypeString",
+         "alias": "BUURT",
+         "sqlType": "sqlTypeOther",
+         "length": 2000,
+         "domain": null,
+         "defaultValue": null
+      },
+      {
+         "name": "WIJK",
+         "type": "esriFieldTypeString",
+         "alias": "WIJK",
+         "sqlType": "sqlTypeOther",
+         "length": 25,
+         "domain": null,
+         "defaultValue": null
+      }
+   ],
+   "features": [
+      {
+         "attributes": {
+            "OBJECTID": 1,
+            "BUURT": "Brabantpark",
+            "WIJK": "Breda oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 2,
+            "BUURT": "City",
+            "WIJK": "Breda centrum"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 3,
+            "BUURT": "Valkenberg",
+            "WIJK": "Breda centrum"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 4,
+            "BUURT": "Buitengebied Prinsenbeek",
+            "WIJK": "Prinsenbeek"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 5,
+            "BUURT": "Prinsenbeek",
+            "WIJK": "Prinsenbeek"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 6,
+            "BUURT": "Emer",
+            "WIJK": "Breda noord-west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 7,
+            "BUURT": "Steenakker",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 8,
+            "BUURT": "Moleneind-oost",
+            "WIJK": "Breda oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 9,
+            "BUURT": "Station",
+            "WIJK": "Breda centrum"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 10,
+            "BUURT": "Belcrum",
+            "WIJK": "Breda noord"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 11,
+            "BUURT": "Doornbos-Linie",
+            "WIJK": "Breda noord"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 12,
+            "BUURT": "Krogten",
+            "WIJK": "Breda noord"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 14,
+            "BUURT": "Buitengebied Teteringen",
+            "WIJK": "Teteringen"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 15,
+            "BUURT": "Gageldonk",
+            "WIJK": "Breda noord-west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 17,
+            "BUURT": "Biesdonk",
+            "WIJK": "Breda noord"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 18,
+            "BUURT": "Kesteren",
+            "WIJK": "Breda noord-west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 19,
+            "BUURT": "Hagebeemd",
+            "WIJK": "Breda noord-west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 20,
+            "BUURT": "Waterdonken",
+            "WIJK": "Breda noord"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 21,
+            "BUURT": "Kievitsloop",
+            "WIJK": "Breda noord-west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 22,
+            "BUURT": "Geeren-noord",
+            "WIJK": "Breda noord"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 23,
+            "BUURT": "Wisselaar",
+            "WIJK": "Breda noord"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 24,
+            "BUURT": "Vuchtpolder",
+            "WIJK": "Teteringen"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 25,
+            "BUURT": "Muizenberg",
+            "WIJK": "Breda noord-west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 26,
+            "BUURT": "Heksenwiel",
+            "WIJK": "Breda noord-west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 27,
+            "BUURT": "Kroeten",
+            "WIJK": "Breda noord-west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 28,
+            "BUURT": "Overkroeten",
+            "WIJK": "Breda noord-west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 29,
+            "BUURT": "Hazeldonk",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 30,
+            "BUURT": "Mastbos",
+            "WIJK": "Breda zuid-oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 31,
+            "BUURT": "Buitengebied Ulvenhout",
+            "WIJK": "Ulvenhout"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 32,
+            "BUURT": "Effen-Rith",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 33,
+            "BUURT": "Ulvenhout",
+            "WIJK": "Ulvenhout"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 34,
+            "BUURT": "Buitengebied Bavel",
+            "WIJK": "Bavel"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 35,
+            "BUURT": "Ginneken",
+            "WIJK": "Breda zuid-oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 36,
+            "BUURT": "Overakker",
+            "WIJK": "Breda zuid-oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 37,
+            "BUURT": "Bavel",
+            "WIJK": "Bavel"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 38,
+            "BUURT": "Nieuw Wolfslaar",
+            "WIJK": "Bavel"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 39,
+            "BUURT": "Princenhage",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 40,
+            "BUURT": "Ruitersbos",
+            "WIJK": "Breda zuid"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 41,
+            "BUURT": "Liesbos",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 42,
+            "BUURT": "Ypelaar",
+            "WIJK": "Breda zuid-oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 43,
+            "BUURT": "Heuvel",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 44,
+            "BUURT": "Blauwe Kei",
+            "WIJK": "Breda zuid-oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 45,
+            "BUURT": "Boeimeer",
+            "WIJK": "Breda zuid"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 46,
+            "BUURT": "Zandberg",
+            "WIJK": "Breda oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 47,
+            "BUURT": "Sportpark",
+            "WIJK": "Breda oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 48,
+            "BUURT": "Hoogeind",
+            "WIJK": "Breda oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 49,
+            "BUURT": "Heusdenhout",
+            "WIJK": "Breda oost"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 50,
+            "BUURT": "Tuinzigt",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 51,
+            "BUURT": "Haagpoort",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 52,
+            "BUURT": "Heilaar",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 53,
+            "BUURT": "Chassé",
+            "WIJK": "Breda centrum"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 54,
+            "BUURT": "Fellenoord",
+            "WIJK": "Breda centrum"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 55,
+            "BUURT": "Westerpark",
+            "WIJK": "Breda west"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 56,
+            "BUURT": "Schorsmolen",
+            "WIJK": "Breda centrum"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 57,
+            "BUURT": "Teteringen",
+            "WIJK": "Teteringen"
+         }
+      },
+      {
+         "attributes": {
+            "OBJECTID": 58,
+            "BUURT": "Geeren-zuid",
+            "WIJK": "Breda noord"
+         }
+      }
+   ]
+}
