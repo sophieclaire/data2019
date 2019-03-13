@@ -1,0 +1,9 @@
+{
+
+  "Europe" : [ "Austria", "Belgium", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Netherlands", "Norway", "Poland", "Portugal", "Slovak Republic", "Slovenia", "Spain", "Sweden", "Switzerland", "United Kingdom"],
+  "MiddleEast" : ["Israel", "Turkey"],
+  "America" : ["Canada", "Chile", "Mexico", "United States"],
+  "Asia" : ["Japan", "Korea"],
+  "Oceania" : ["Australia", "New Zealand"]
+
+}
