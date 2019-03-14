@@ -231,8 +231,8 @@ function makescatterplot(dataset){
 
     // print year label
     svg.select("text")
-        .attr("x", 0 - (margin.left))
-        .attr("y", 0 + (margin.bottom))
+        .attr("x", 0 + (margin.left * 13))
+        .attr("y", 0 + (margin.bottom * 1.3))
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
         .style("text-decoration", "bold")
@@ -274,8 +274,8 @@ function makescatterplot(dataset){
 
             // print year label
              svg.select("text")
-             .attr("x", 0 - (margin.left))
-             .attr("y", 0 + (margin.bottom))
+             .attr("x", 0 + (margin.left * 13))
+             .attr("y", 0 + (margin.bottom * 1.3))
              .attr("text-anchor", "middle")
              .style("font-size", "16px")
              .style("text-decoration", "bold")
