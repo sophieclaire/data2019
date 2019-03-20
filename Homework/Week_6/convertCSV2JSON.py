@@ -55,7 +55,7 @@ def save_json(data):
 if __name__ == "__main__":
 
     #open csv file
-    data = open_csv("LifeQuality.csv")
+    data = open_csv("LifeQuality2019.csv")
 
     #clean data
     data = clean_data(data)

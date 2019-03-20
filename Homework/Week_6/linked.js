@@ -2,6 +2,7 @@
 Sophie Stiekema,
 10992499,
 This file creates two linked graphs
+https://github.com/markmarkoh/datamaps
 */
 
 window.onload = jscode();
@@ -12,31 +13,32 @@ function jscode() {
     .then(response => response.json())
     .then(json => {
       console.log(json)
-      // create countries array
-      var data = {}
+      // create data dictionaries
+
+      var qualitydata = {},
+          costdata = {}
       for(let i = 1, l = Object.keys(json).length; i < l; i++) {
-        data[json[i].Country] = json[i]["Quality of Life Index"];
-        //console.log(json[i].Country)
+        qualitydata[json[i].Country] = json[i]["Quality of Life Index"]
+        costdata[json[i].Country] = json[i]["Cost of Living Index"];
       }
-      console.log(data)
-      const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length
-      var mean = arrAvg(Object.values(data));
-      console.log(mean)
+
+      console.log(qualitydata)
+      console.log(costdata)
+
+
       var countries = Datamap.prototype.worldTopo.objects.world.geometries;
       console.log(countries)
 
-      var less = [],
-          more = [];
 
       // pair up countries from both datasets
-      let replacekey = Object.keys(data).map((key) => {
+      let replacekey = Object.keys(qualitydata).map((key) => {
         for (var i = 0, j = countries.length; i < j; i++) {
           if (countries[i].properties.name == key){
             // console.log(countries[i].properties.name);
             // console.log(key)
             // console.log(data[key])
             var newkey = countries[i].id
-            return [newkey, data[key]]
+            return [newkey, qualitydata[key]]
           }
         }
       })
@@ -52,7 +54,7 @@ function jscode() {
       var minValue = Math.min.apply(null, onlyValues),
           maxValue = Math.max.apply(null, onlyValues);
 
-      var paletteScale = d3.scale.linear()
+      var paletteScale = d3v5.scaleLinear()
             .domain([minValue,maxValue])
             .range(["#EFEFFF","#02386F"]);
 
@@ -62,53 +64,171 @@ function jscode() {
             index = item[1];
         dataset[country] = { numberOfThings: index, fillColor: paletteScale(index) };
     });
+    console.log(dataset)
 
-      // function addFillKey(data){
-      //   for (var mapDatum in data){
-      //     //console.log(data[mapDatum])
-      //
-      //     if (typeof(data[mapDatum]) !== "undefined") {
-      //       var index = data[mapDatum].index;
-      //       //console.log(data[mapDatum].Country)
-      //       //console.log(index)
-      //       if(index <= (.75 * mean)){
-      //           data[mapDatum].fillKey = "lightBlue"
-      //       }
-      //       else if((.75 * mean) < index && index <= mean){
-      //           data[mapDatum].fillKey = "justBlue"
-      //       }
-      //       else if (mean < index && index <= (1.25 * mean)){
-      //           data[mapDatum].fillKey = "mediumBlue"
-      //       }
-      //       else {
-      //         data[mapDatum].fillKey = "deepBlue"
-      //       }
-      //     }
-      //   }
-      // }
-      // addFillKey(replacekey);
+    drawmap(dataset);
+    newgraph(json[1])
+    });
 
-      var map = new Datamap({
-        element: document.getElementById('container'),
-        scope : 'world',
-        fills: { defaultFill: '#F5F5F5' },
-        data: dataset,
-        geographyConfig : {
-          // show  Life Quality Index in tooltip
-            popupTemplate: function(geo, data) {
-                // don't show tooltip if no data for the country
-                if (!data) { return ; }
-                // tooltip content
-                return ['<div class="hoverinfo">',
-                    '<strong>', geo.properties.name, '</strong>',
-                    '<br>Life Quality Index: <strong>', data.numberOfThings, '</strong>',
-                    '</div>'].join('');
+
+    function drawmap(dataset) {
+
+          var map = new Datamap({
+            element: document.getElementById('container'),
+            scope : 'world',
+            fills: { defaultFill: '#F5F5F5' },
+            data: dataset,
+            geographyConfig : {
+              // show  Life Quality Index in tooltip
+                popupTemplate: function(geo, data) {
+                    // don't show tooltip if no data for the country
+                    if (!data) { return ; }
+                    // tooltip content
+                    return ['<div class="hoverinfo">',
+                        '<strong>', geo.properties.name, '</strong>',
+                        '<br>Life Quality Index: <strong>', data.numberOfThings, '</strong>',
+                        '</div>'].join('');
+                }
             }
+        });
+
+        // NOT WORKING
+        // Draw a legend for this map
+        var legend = d3v5.select("svg")
+            .data(dataset)
+            .enter().append("g")
+            .attr("class", "legend")
+            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+        var w = 500;
+        // draw legend colored rectangles
+        legend.append("rect")
+              .attr("x", w - 100)
+              .attr("width", 18)
+              .attr("height", 18)
+              .style("fill", function (d) {
+                d.fillcolor;
+              });
+
+        // print legend text
+        legend.append("text")
+              .attr("x", w - 50)
+              .attr("y", 9)
+              .attr("dy", ".35em")
+              .style("text-anchor", "end")
+              .text(function(d) {
+                return d;
+              });
         }
-    });
 
-    // Draw a legend for this map
-    map.legend();
+        function newgraph (countrydata) {
 
-    });
+          var climate = countrydata["Climate Index"],
+              cost = ["Cost of Living Index"],
+              health = ["Health Care Index"],
+              pollution = ["Pollution Index"]
+              safety = ["Safety Index"]
+
+          delete countrydata["Country"]
+          delete countrydata["Property Price to Income Ratio"]
+
+          // create an array containing the indeces
+          var dataset = Object.values(countrydata)
+
+          // set dimensions
+          var margin = {top: 70, right: 20, bottom: 95, left: 50},
+              w = 600 - margin.left - margin.right,
+              h = 400 - margin.top - margin.bottom,
+              barPadding = 1;
+
+          // set x & y scales & axes
+          var xScale = d3v5.scaleBand()
+                          .range([0, w])
+                          .padding(.01)
+
+          var yScale = d3v5.scaleLinear()
+                          .range([h, 0])
+
+          var yAxis = d3v5.axisLeft(yScale),
+              xAxis = d3v5.axisBottom(xScale);
+
+          //create tip
+          var tip = d3v5.tip()
+              .attr('class', 'd3-tip')
+              .offset([-10, 0])
+              .html(function(d) {
+                return "<strong>Index:</strong> <span style='color:lavender'>" + d + "</span>";
+                })
+
+          //create SVG element
+          var svg = d3v5.select("body")
+                      .append("svg")
+                      .attr("width", w + margin.left + margin.right)
+                      .attr("height", h + margin.bottom + margin.top)
+                    .append("g")
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+          svg.call(tip);
+
+          // set the domains
+          xScale.domain(Object.keys(countrydata))
+          yScale.domain([0, d3v5.max(dataset, function(d) { return d; })]);
+
+          // draw the bars
+          svg.selectAll("bar")
+              .data(dataset)
+            .enter().append("rect")
+              .attr("class", "bar")
+              .attr("x", function(d, i) {
+                return xScale(Object.keys(countrydata)[i]);
+                })
+              .attr("y", function(d) {
+                return yScale(d);
+                })
+            .attr("width", xScale.bandwidth())
+            .attr("height", function(d) {
+                return h - yScale(d);
+                })
+            .attr("fill", function(d) {
+                return "rgb(200, 150, " + (d * 30) + ")";
+                })
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
+
+            // add y-axis
+            svg.append("g")
+                .attr("class", "y axis")
+                .attr("transform", "translate(" + barPadding + ",0)")
+                .call(yAxis)
+              .append("text")
+                .attr("class", "y label")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left )
+                .attr("x", 0 - h /2 )
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .style("fill", "black")
+                .text("y");
+
+            // add x-axis
+            svg.append("g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + (h - barPadding) + ")")
+              .call(xAxis)
+            .selectAll("text")
+              .style("text-anchor", "end")
+              .attr("dx", "-.8em")
+              .attr("dy", "-.55em")
+              .attr("transform", "rotate(-90)" );
+
+            svg.append("text")
+                .attr("x", (w / 2))
+                .attr("y", 0 - (margin.top / 10 ))
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .style("text-decoration", "underline")
+                .text("Comparison of indeces");
+
+
+        }
 }
