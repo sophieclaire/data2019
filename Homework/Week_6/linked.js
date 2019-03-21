@@ -67,7 +67,7 @@ function jscode() {
     console.log(dataset)
 
     drawmap(dataset);
-    newgraph(json[1])
+    newgraph(json)
     });
 
 
@@ -123,21 +123,22 @@ function jscode() {
 
         function newgraph (countrydata) {
 
-          var climate = countrydata["Climate Index"],
-              cost = ["Cost of Living Index"],
-              health = ["Health Care Index"],
-              pollution = ["Pollution Index"]
-              safety = ["Safety Index"]
-
-          delete countrydata["Country"]
-          delete countrydata["Property Price to Income Ratio"]
+          console.log(countrydata[1]["Quality of Life Index"])
+          var dataset = []
 
           // create an array containing the indeces
-          var dataset = Object.values(countrydata)
+          for (var i = 1, j = Object.keys(countrydata).length; i < j; i++) {
+            dataset.push(countrydata[i]["Quality of Life Index"])
+          }
+            console.log(dataset)
+          // calculate the mean of the index
+          var sum = dataset.reduce((previous, current) => current += previous);
+          let average = sum / dataset.length;
+          console.log(average)
 
           // set dimensions
           var margin = {top: 70, right: 20, bottom: 95, left: 50},
-              w = 600 - margin.left - margin.right,
+              w = 400 - margin.left - margin.right,
               h = 400 - margin.top - margin.bottom,
               barPadding = 1;
 
@@ -170,17 +171,21 @@ function jscode() {
 
           svg.call(tip);
 
+          country = countrydata[1][["Quality of Life Index"]]
+          console.log(country)
+          obj = {"average" : average, "country" : country}
+          console.log(obj)
           // set the domains
-          xScale.domain(Object.keys(countrydata))
+          xScale.domain(Object.keys(obj))
           yScale.domain([0, d3v5.max(dataset, function(d) { return d; })]);
 
           // draw the bars
           svg.selectAll("bar")
-              .data(dataset)
+              .data(Object.values(obj))
             .enter().append("rect")
               .attr("class", "bar")
-              .attr("x", function(d, i) {
-                return xScale(Object.keys(countrydata)[i]);
+              .attr("x", function(d,i) {
+                return xScale(Object.keys(obj)[i]);
                 })
               .attr("y", function(d) {
                 return yScale(d);
@@ -190,7 +195,7 @@ function jscode() {
                 return h - yScale(d);
                 })
             .attr("fill", function(d) {
-                return "rgb(200, 150, " + (d * 30) + ")";
+                return "rgb(80, 150, " + (d * 30) + ")";
                 })
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide);
