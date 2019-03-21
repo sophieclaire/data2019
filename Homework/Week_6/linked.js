@@ -64,7 +64,7 @@ function jscode() {
             index = item[1];
         dataset[country] = { numberOfThings: index, fillColor: paletteScale(index) };
     });
-    console.log(dataset)
+    console.log(Object.values(json))
 
     drawmap(json, dataset);
 
@@ -93,8 +93,16 @@ function jscode() {
             },
             done: function(datamap) {
             datamap.svg.selectAll('.datamaps-subunit').on('click', function (geography) {
-                console.log(geography.properties.name);
-                newgraph(data, geography.properties.name);
+              for(let i = 0, j = Object.keys(data).length; i < j; i++) {
+                //console.log(Object.values(data)[i].Country);
+
+                if (geography.properties.name == Object.values(data)[i].Country) {
+                    newgraph(data, geography.properties.name);
+                  }
+                else {
+                  console.log(geography.properties.name);
+                }
+              }
             })
           }
         });
