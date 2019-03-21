@@ -66,12 +66,13 @@ function jscode() {
     });
     console.log(dataset)
 
-    drawmap(dataset);
-    newgraph(json)
+    drawmap(json, dataset);
+
+    //newgraph(json)
     });
 
 
-    function drawmap(dataset) {
+    function drawmap(data, dataset) {
 
           var map = new Datamap({
             element: document.getElementById('container'),
@@ -89,7 +90,13 @@ function jscode() {
                         '<br>Life Quality Index: <strong>', data.numberOfThings, '</strong>',
                         '</div>'].join('');
                 }
-            }
+            },
+            done: function(datamap) {
+            datamap.svg.selectAll('.datamaps-subunit').on('click', function (geography) {
+                console.log(geography.properties.name);
+                newgraph(data, geography.properties.name);
+            })
+          }
         });
 
         // NOT WORKING
@@ -119,9 +126,10 @@ function jscode() {
               .text(function(d) {
                 return d;
               });
+
         }
 
-        function newgraph (countrydata) {
+        function newgraph (countrydata, name) {
 
           console.log(countrydata[1]["Quality of Life Index"])
           var dataset = []
@@ -138,13 +146,13 @@ function jscode() {
 
           // set dimensions
           var margin = {top: 70, right: 20, bottom: 95, left: 50},
-              w = 400 - margin.left - margin.right,
+              w = 200 - margin.left - margin.right,
               h = 400 - margin.top - margin.bottom,
               barPadding = 1;
 
           // set x & y scales & axes
           var xScale = d3v5.scaleBand()
-                          .range([0, w])
+                          .range([0, w ])
                           .padding(.01)
 
           var yScale = d3v5.scaleLinear()
@@ -171,10 +179,14 @@ function jscode() {
 
           svg.call(tip);
 
-          country = countrydata[1][["Quality of Life Index"]]
-          console.log(country)
-          obj = {"average" : average, "country" : country}
-          console.log(obj)
+          for(let i = 1, j = Object.keys(countrydata).length; i < j; i++) {
+            if (name == countrydata[i].Country ) {
+              country = countrydata[i]["Quality of Life Index"];
+            }
+          }
+
+          obj = {"World Average" : average, [name] : country}
+
           // set the domains
           xScale.domain(Object.keys(obj))
           yScale.domain([0, d3v5.max(dataset, function(d) { return d; })]);
@@ -228,7 +240,7 @@ function jscode() {
 
             svg.append("text")
                 .attr("x", (w / 2))
-                .attr("y", 0 - (margin.top / 10 ))
+                .attr("y", 0 - (margin.top / 2 ))
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .style("text-decoration", "underline")
