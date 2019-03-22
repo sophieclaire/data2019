@@ -3,7 +3,11 @@ Sophie Stiekema,
 10992499,
 This file creates a scatter plot
 */
-
+.legend {
+  position: absolute;
+  top: 70px; 
+  left: 520px;
+}
 
   .d3-tip {
     line-height: 1;

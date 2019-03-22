@@ -54,9 +54,9 @@ function jscode() {
       var minValue = Math.min.apply(null, onlyValues),
           maxValue = Math.max.apply(null, onlyValues);
 
-      var paletteScale = d3v5.scaleLinear()
+      var paletteScale = d3v5.scaleSequential()
             .domain([minValue,maxValue])
-            .range(["#EFEFFF","#02386F"]);
+            .interpolator(d3v5.interpolateRdYlGn);
 
       // fill dataSets
       replacekey.forEach(function(item){ //
@@ -64,20 +64,22 @@ function jscode() {
             index = item[1];
         dataset[country] = { numberOfThings: index, fillColor: paletteScale(index) };
     });
-    console.log(Object.values(json))
+    console.log(dataset)
+    console.log(json)
 
-    drawmap(json, dataset);
+    drawmap(json, dataset, paletteScale);
 
     //newgraph(json)
     });
 
 
-    function drawmap(data, dataset) {
+    function drawmap(data, dataset, paletteScale) {
+
 
           var map = new Datamap({
             element: document.getElementById('container'),
             scope : 'world',
-            fills: { defaultFill: '#F5F5F5' },
+            fills: { defaultFill: '#F5F5F5'},
             data: dataset,
             geographyConfig : {
               // show  Life Quality Index in tooltip
@@ -107,35 +109,45 @@ function jscode() {
           }
         });
 
-        // NOT WORKING
-        // Draw a legend for this map
-        var legend = d3v5.select("svg")
-            .data(dataset)
-            .enter().append("g")
+        // set dimensions
+        var margin = {top: 70, right: 20, bottom: 95, left: 50},
+            w = 100 - margin.left - margin.right,
+            h = 400 - margin.top - margin.bottom,
+            padding = 40;
+
+      var keys = ["1", "2", "3", "4", "5", "6", "7"];
+      var color = d3v5.scaleOrdinal()
+          .domain(keys)
+          .range(d3v5.schemeRdYlGn[7]);
+
+      var legend = d3v5.select("div#container").append("svg")
             .attr("class", "legend")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+            .attr("width", w + margin.left + margin.right)
+            .attr("height", h + margin.bottom + margin.top)
+          .selectAll("g")
+            .data(keys)
+            .enter().append("g")
+          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-        var w = 500;
-        // draw legend colored rectangles
-        legend.append("rect")
-              .attr("x", w - 100)
-              .attr("width", 18)
-              .attr("height", 18)
-              .style("fill", function (d) {
-                d.fillcolor;
-              });
+          // draw legend colored rectangles
+          legend.append("rect")
+                .attr("x", w - 18)
+                .attr("width", 18)
+                .attr("height", 18)
+                .style("fill", color);
 
-        // print legend text
-        legend.append("text")
-              .attr("x", w - 50)
-              .attr("y", 9)
-              .attr("dy", ".35em")
-              .style("text-anchor", "end")
-              .text(function(d) {
-                return d;
-              });
+          // print legend text
+          legend.append("text")
+                .attr("x", w - 20)
+                .attr("y", 9)
+                .attr("dy", ".35em")
+                .style("text-anchor", "end")
+                .text(function(d) {
+                  return d;
+                });
 
-        }
+
+      }
 
         function newgraph (countrydata, name) {
 
