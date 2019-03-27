@@ -2,10 +2,14 @@
 <!--
 Sophie Stiekema,
 10992499,
-This file creates two linked graphs
+This file creates a world map and a barchart
+
 
 Inspiration taken From:
-
+https://www.d3-graph-gallery.com/graph/custom_legend.html
+http://bl.ocks.org/alansmithy/e984477a741bc56db5a5
+https://bl.ocks.org/mbostock/3808221
+https://github.com/markmarkoh/datamaps/blob/master/README.md#getting-started
 -->
 
 
@@ -31,28 +35,26 @@ Inspiration taken From:
     <script>
       d3v3 = d3;
       window.d3 = null;
-
-      // Test if it worked
-      console.log('v3', d3v3.version);
-      console.log('v5', d3v5.version);
     </script>
-
-    <div id="container" style="position: fixed; width: 700px; height: 400px; top: 180px;"></div>
-    <div id="barchart" style="position: fixed; width: 500px; height: 450px; top: 160px; left: 800px;"></div>
-
 
     <script type="text/javascript" src="linked.js"></script>
     <link rel="stylesheet" type="text/css" href="linked.css">
-    <title> Linked view </title>
+    <title> Life Quality </title>
 
   </head>
   <body>
-<h1> Life Quality Index around the World in 2019</h1>
-    <p>
-      Sophie Stiekema <br>
-      10992499<br>
-      Click on a country to see how it compares to the World average Life Quality Index. <br>
-      Data retrieved from <a href="https://www.numbeo.com/quality-of-life/rankings_by_country.jsp">Numbeo</a>
+<h1> Quality of Life Index around the World in 2019</h1>
+    <p style="font-family:courier;font-size:80%">
+      by Sophie Stiekema, 10992499;   Data retrieved from <a href="https://www.numbeo.com/quality-of-life/rankings_by_country.jsp">Numbeo</a>
+</p>
+    <p style="font-family:Times;">The Quality of Life Index measures overall quality of life by taking into account several other variables:
+      purchasing power, safety, health care, cost of living, property price to income ratio, traffic commute time,
+      pollution and climate. <br>
+      Denmark currently holds the highest Index, while the Netherlands ranks 6th. <br>
+      Click on a country to see how it compares to the world average. <br>
     </p>
+        <div id="container" style="position: relative; width: 700px; height: 400px; top: 20px;"></div>
+        <div id="barchart" style="position: relative; width: 500px; height: 450px; top: -395px; left: 800px;"></div>
+
   </body>
 </html>
