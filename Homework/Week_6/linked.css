@@ -3,10 +3,12 @@ Sophie Stiekema,
 10992499,
 This file creates a scatter plot
 */
+
 .legend {
   position: absolute;
-  top: 70px; 
-  left: 520px;
+  top: 60px;
+  left: 680px;
+  width: 250px;
 }
 
   .d3-tip {
