@@ -1,8 +1,7 @@
 /*
 Sophie Stiekema,
 10992499,
-This file creates two linked graphs
-https://github.com/markmarkoh/datamaps
+This file creates a world map and a barchart
 */
 
 window.onload = jscode();
