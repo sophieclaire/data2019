@@ -58,7 +58,7 @@ function jscode() {
       // fill datasets
       replacekey.forEach(function(item){ //
         var countrycode = item[0],
-            index = item[1],
+            index = Math.round(item[1]),
             country = item[2];
         dataset[countrycode] = { LifeIndex: index, fillColor: paletteScale(index), country : country };
       });
@@ -102,9 +102,10 @@ function jscode() {
                     '</div>'].join('');
             }
         },
+
         // update barchart when clicking on country
-        done: function(datamap) {
-          datamap.svg.selectAll('.datamaps-subunit').on('click', function (geography) {
+        done: function(map) {
+          map.svg.selectAll('.datamaps-subunit').on('click', function (geography) {
             for(let i = 0, j = Object.keys(data).length; i < j; i++) {
               if (geography.properties.name == Object.values(data)[i].Country) {
                   update(dataset, geography.properties.name, paletteScale);
@@ -114,6 +115,15 @@ function jscode() {
               }
             }
           })
+
+          map.svg.append('text')
+               .attr("x", 300)
+               .attr("y", 15 )
+               .attr("text-anchor", "middle")
+               .style("font-size", "16px")
+               .style("text-decoration", "underline")
+               .style("font-style", "italic")
+               .text("Life Quality Index around the world");
         }
       });
 
@@ -124,7 +134,7 @@ function jscode() {
           padding = 40;
 
       // legend labels & color
-      var keys = ["<90", " ", "", "  ", "    ", "     ", "      ", ">190"];
+      var keys = ["< 90", " ", "", "  ", "    ", "     ", "      ", "> 190"];
       var color = d3v5.scaleOrdinal()
           .domain(keys)
           .range(d3v5.schemeRdYlGn[8]);
@@ -137,24 +147,34 @@ function jscode() {
           .selectAll("g")
             .data(keys)
             .enter().append("g")
-          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+          .attr("transform", function(d, i) { return "translate(0," + i * -20 + ")"; });
 
           // draw legend colored rectangles
           legend.append("rect")
                 .attr("x", w + 35)
-                .attr("width", 20)
-                .attr("height", 20)
+                .attr("y", h / 1.5)
+                .attr("width", margin.right)
+                .attr("height", margin.right)
                 .style("fill", color);
 
           // print legend text
           legend.append("text")
-                .attr("x", w + 25)
-                .attr("y", 9)
+                .attr("x", w + 29)
+                .attr("y", h / 1.45)
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
                 .text(function(d) {
                   return d;
                 });
+          // add legend title
+          d3v5.select("div#container").select("svg.legend").append('text')
+               .attr("x", 70)
+               .attr("y", 50 )
+               .attr("text-anchor", "middle")
+               .style("font-size", "16px")
+               .style("font-style", "italic")
+               .text("Index");
+
       }
 
         function newgraph (countrydata, name, paletteScale) {
@@ -168,6 +188,8 @@ function jscode() {
           // calculate the mean of the index
           var sum = dataset.reduce((previous, current) => current += previous);
           let average = sum / dataset.length;
+          average = Math.round(average);
+
 
           // set dimensions
           var margin = {top: 70, right: 20, bottom: 95, left: 50},
@@ -256,7 +278,7 @@ function jscode() {
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .style("fill", "black")
-                .text("y");
+                .text("Life Quality Index");
 
             // add x-axis
             svg.append("g")
@@ -275,6 +297,7 @@ function jscode() {
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .style("text-decoration", "underline")
+                .style("font-style", "italic")
                 .text("Comparison of index to average");
         }
 
@@ -289,6 +312,7 @@ function jscode() {
       // calculate the mean of the index
       var sum = dataset.reduce((previous, current) => current += previous);
       var average = sum / dataset.length;
+      average = Math.round(average);
 
       // set dimensions
       var margin = {top: 70, right: 20, bottom: 95, left: 50},
@@ -336,8 +360,8 @@ function jscode() {
       svg.call(tip);
 
       // remove old bar
-      svg.selectAll("rect")
-      .remove();
+      // svg.selectAll("rect")
+      // .remove();
 
       // remove country label
       svg.select("g.x.axis").selectAll("g.tick").remove();
